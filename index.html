@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Читабельномсть текста</title>
+</head>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript">
+//    $(document).ready(function() {
+//
+//    });
+    function NextWord(str, begin)
+    {
+        var len = str.length;
+
+        // Пропускаем первые пробелы
+        while (begin < len && str.charAt(begin) == " ") begin++;
+
+        // Не вышел ли указатель за правый край строки?
+        if (begin >= len) return 0;
+
+        // Обнаружено начало слова. Установим указатель на законец.
+        while (begin < len && str.charAt(begin) != " ") begin++;
+
+        return begin;
+    }
+
+    function NumOfWords(str)
+    {
+
+        return num;
+    }
+    function switchWrappers(){
+        var $active = $('.active');
+        var $nonactive = $('.nonactive');
+        $($active).removeClass('active').addClass('nonactive');
+        $($nonactive).removeClass('nonactive').addClass('active');
+    }
+    function sentenceCount(){
+        var str = $("#red").val();
+        var sentence_count = str.split('.').length - 1 + str.split('!').length - 1 + str.split('?').length - 1;
+        var $t = "<p>Предложений: " + sentence_count + "</p>";
+        $("#total").after($t);
+
+        var count = $("#red").val().length;
+        var consonant = "аоэиуыеёюя";
+        var tmp;
+        var $gl_count = 0;
+        var letters_count;
+        var $g = "<p>Слогов: " + $gl_count + "</p>";
+
+
+        for (i=0; i< consonant.length-1; i++){
+            tmp = consonant.substring(i, i+1);
+            letters_count = str.split(tmp).length - 1;
+            $gl_count = $gl_count + letters_count;
+            $g = "<p>Слогов: " + $gl_count + "</p>";
+        }
+        $("#total").after($g);
+
+        var num = 0;
+        var begin = 0;
+        begin=NextWord(str, begin);
+        while(begin) { num++; begin=NextWord(str, begin); }
+
+
+
+        var $w =  "<p>Слов: " + num + "</p>";
+        $("#total").after($w);
+        var $total = 0;
+        $total = 206.835- 1.3*(num/sentence_count)-60.1*($gl_count/num);
+        $("#total").after($total.toFixed());
+        $("#red").val('');
+    };
+
+</script>
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<body>
+<div class="wrapper active">
+    <textarea name="red" id="red"  cols="30" rows="10"></textarea>
+    <button class="total" onclick="sentenceCount(); switchWrappers()">Расчет</button>
+</div>
+ <div class="wrapper nonactive">
+     <button  onclick=" switchWrappers()">Проверить еще</button>
+     <div id="total">Результаты:</div>
+ </div>
+</body>
+</html>
